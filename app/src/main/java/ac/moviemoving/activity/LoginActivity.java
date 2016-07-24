@@ -84,6 +84,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         new Handler().postDelayed(() -> {
             if (MyApp.getInstance().getUserManager().isLogin()) {
                 go(MainActivity.class);
+                finish();
             } else {
                 this.showActionBar();
                 this.showSoftKeyboard(mPhoneView);
@@ -110,7 +111,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                     }
                 }).start();
             }
-        }, 3000);
+        }, 1500);
     }
 
     private void populateAutoComplete() {
