@@ -74,4 +74,12 @@ public class DataProvider {
         }
         return RoomSchedules;
     }
+
+    static final String MESSAGES = "message";
+    public static void sendMessage(String receiver, String content) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(MESSAGES, sp.getString(MESSAGES, "") + MyMessage.parse(receiver, content).toJsonString());
+        editor.apply();
+    }
 }

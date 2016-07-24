@@ -1,5 +1,6 @@
 package ac.moviemoving.activity;
 
+import ac.CalUtil;
 import ac.moviemoving.R;
 import ac.moviemoving.data.DataProvider;
 import ac.moviemoving.model.RoomSchedule;
@@ -126,7 +127,6 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -135,6 +135,7 @@ public class ScheduleActivity extends AppCompatActivity {
         }
 
         private static final String ARG_SECTION_NUMBER = "section_number";
+
         public static ShowScheduleFragment newInstance(int sectionNumber) {
             ShowScheduleFragment fragment = new ShowScheduleFragment();
             Bundle args = new Bundle();
@@ -148,11 +149,12 @@ public class ScheduleActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-            ViewGroup scheduleTable = (ViewGroup) rootView.findViewById(R.id.schedule);
-            rootView.setOnTouchListener((view, motionEvent) -> {
+            rootView.findViewById(R.id.scrollViewSchedule).setOnTouchListener((view, motionEvent) -> {
+                System.out.println("ShowScheduleFragment.onCreateView");
                 touchedView = null;
                 return false;
             });
+            ViewGroup scheduleTable = (ViewGroup) rootView.findViewById(R.id.schedule);
             //todo should by async from internet
             List<RoomSchedule> roomSchedules = DataProvider.getRoomSchedule();
             for (RoomSchedule rs : roomSchedules) {
@@ -162,10 +164,55 @@ public class ScheduleActivity extends AppCompatActivity {
                 for (int i = 0; i < 50; ++i) {
                     data[i] = "move name name\ntime time time;";
                 }
-                lv.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.sample_text_view, data));
+                lv.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.sample_text_view, data) {
+                    @Override
+                    public boolean isEnabled(int position) {
+                        return false;
+                    }
+                });
                 scheduleTable.addView(lv);
                 addToSyncGroup(lv);
             }
+
+            //init time listview
+            ListView timeListView = (ListView) rootView.findViewById(R.id.timeList);
+            timeListView.setAdapter(new BaseAdapter() {
+                @Override
+                public int getCount() {
+                    return 100;
+                }
+
+                @Override
+                public Object getItem(int i) {
+                    return null;
+                }
+
+                @Override
+                public long getItemId(int i) {
+                    return 0;
+                }
+
+                @Override
+                public View getView(int i, View view, ViewGroup viewGroup) {
+                    if (view == null) {
+                        view = LayoutInflater.from(getActivity()).inflate(R.layout.item_time, viewGroup, false);
+                    }
+                    CalUtil cal = new CalUtil();
+                    String dateAndHour[] = cal.getTimeAfterNHours("MM-dd HH", i).split(" ");
+                    if (dateAndHour[1].equals("00")) {
+                        ((TextView) view.findViewById(R.id.time)).setText(dateAndHour[0] + "\n" + dateAndHour[1] + ":00");
+                    } else {
+                        ((TextView) view.findViewById(R.id.time)).setText(dateAndHour[1] + ":00");
+                    }
+                    return view;
+                }
+
+                @Override
+                public boolean isEnabled(int position) {
+                    return false;
+                }
+            });
+            addToSyncGroup(timeListView);
 
             return rootView;
         }
@@ -174,6 +221,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
 
         private View touchedView = null;
+
         private void addToSyncGroup(ListView lv) {
             syncListViews.add(lv);
             lv.setOnTouchListener((view, motionEvent) -> {
@@ -196,7 +244,6 @@ public class ScheduleActivity extends AppCompatActivity {
         }
 
     }
-
 
 
 }

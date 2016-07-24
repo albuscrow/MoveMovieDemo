@@ -53,12 +53,12 @@
                 app:fab_label="Arrange schedule"/>
 
         <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/menu_item_2"
+                android:id="@+id/menu_item_send_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@android:drawable/ic_menu_agenda"
                 app:fab_size="mini"
-                app:fab_label="Menu item 1"/>
+                app:fab_label="Send Message"/>
 
         <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/menu_item_3"

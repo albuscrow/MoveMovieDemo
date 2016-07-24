@@ -32,4 +32,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
     compile 'com.github.clans:fab:1.6.4'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
 }

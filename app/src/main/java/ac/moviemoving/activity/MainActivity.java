@@ -18,6 +18,9 @@ public class MainActivity extends BaseActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.menu_item_arrange_show_schedule);
         fab.setOnClickListener(view -> go(ScheduleActivity.class));
+
+        fab = (FloatingActionButton) findViewById(R.id.menu_item_send_message);
+        fab.setOnClickListener(view -> go(MessageActivity.class));
     }
 
     @Override

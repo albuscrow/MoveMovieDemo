@@ -58,7 +58,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         showSplashScreenAsync();
 
         // Set up the login form.
-        mPhoneView = (AutoCompleteTextView) findViewById(R.id.phone);
+        mPhoneView = (AutoCompleteTextView) findViewById(R.id.receiver);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
