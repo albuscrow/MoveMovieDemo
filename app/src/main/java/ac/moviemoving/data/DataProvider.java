@@ -1,8 +1,12 @@
 package ac.moviemoving.data;
 
 import ac.moviemoving.MyApp;
+import ac.moviemoving.model.RoomSchedule;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ac on 7/24/16.
@@ -61,5 +65,13 @@ public class DataProvider {
         }
         sp.edit().putString(REGISTER_USER, users + phoneNumber + " " + password + ";").apply();
         Action.actIfNotNull(successAction);
+    }
+
+    public static List<RoomSchedule> getRoomSchedule() {
+        List<RoomSchedule> RoomSchedules = new ArrayList<>();
+        for (int i = 0; i < 10; ++i) {
+            RoomSchedules.add(new RoomSchedule());
+        }
+        return RoomSchedules;
     }
 }

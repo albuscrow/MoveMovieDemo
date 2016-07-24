@@ -1,6 +1,8 @@
 package ac.moviemoving.activity;
 
 import ac.moviemoving.R;
+import ac.moviemoving.data.DataProvider;
+import ac.moviemoving.model.RoomSchedule;
 import android.content.Context;
 import android.content.res.Resources.Theme;
 import android.os.Bundle;
@@ -11,13 +13,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class ScheduleActivity extends AppCompatActivity {
 
@@ -78,16 +82,10 @@ public class ScheduleActivity extends AppCompatActivity {
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
 
     }
-
 
 
     private static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
@@ -128,23 +126,15 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
 
+
     /**
      * A placeholder fragment containing a simple view.
      */
     public static class ShowScheduleFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
         public ShowScheduleFragment() {
         }
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
         public static ShowScheduleFragment newInstance(int sectionNumber) {
             ShowScheduleFragment fragment = new ShowScheduleFragment();
             Bundle args = new Bundle();
@@ -157,8 +147,56 @@ public class ScheduleActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
+
+            ViewGroup scheduleTable = (ViewGroup) rootView.findViewById(R.id.schedule);
+            rootView.setOnTouchListener((view, motionEvent) -> {
+                touchedView = null;
+                return false;
+            });
+            //todo should by async from internet
+            List<RoomSchedule> roomSchedules = DataProvider.getRoomSchedule();
+            for (RoomSchedule rs : roomSchedules) {
+                ListView lv = new ListView(getActivity());
+                lv.setVerticalScrollBarEnabled(false);
+                final String[] data = new String[50];
+                for (int i = 0; i < 50; ++i) {
+                    data[i] = "move name name\ntime time time;";
+                }
+                lv.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.sample_text_view, data));
+                scheduleTable.addView(lv);
+                addToSyncGroup(lv);
+            }
+
             return rootView;
         }
+
+        List<ListView> syncListViews = new ArrayList<>();
+
+
+        private View touchedView = null;
+        private void addToSyncGroup(ListView lv) {
+            syncListViews.add(lv);
+            lv.setOnTouchListener((view, motionEvent) -> {
+                if (touchedView == null) {
+                    touchedView = view;
+                }
+                if (view == touchedView) {
+                    for (ListView other : syncListViews) {
+                        if (other != touchedView) {
+                            other.dispatchTouchEvent(motionEvent);
+                        }
+                    }
+                    if (motionEvent.getAction() == MotionEvent.ACTION_UP
+                            || motionEvent.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
+                        touchedView = null;
+                    }
+                }
+                return false;
+            });
+        }
+
     }
+
+
+
 }
-/**/
