@@ -2,6 +2,8 @@ package ac.moviemoving.activity;
 
 import ac.moviemoving.MyApp;
 import ac.moviemoving.R;
+import ac.moviemoving.data.Action;
+import ac.moviemoving.data.DataProvider;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -10,7 +12,6 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,10 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +40,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mPhoneView;
@@ -77,11 +70,13 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             return false;
         });
 
-        Button mPhoneSignInButton = (Button) findViewById(R.id.phone_sign_in_button);
+        Button mPhoneSignInButton = (Button) findViewById(R.id.sign_in_button);
         mPhoneSignInButton.setOnClickListener(view -> attemptLogin());
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        findViewById(R.id.sign_up_button).setOnClickListener(view->showNotImplement());
     }
 
     private void showSplashScreenAsync() {
@@ -92,7 +87,28 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             } else {
                 this.showActionBar();
                 this.showSoftKeyboard(mPhoneView);
-                findViewById(R.id.splash_screen).setVisibility(View.GONE);
+                final View splashView = findViewById(R.id.splash_screen);
+                splashView.animate().setDuration(500).alpha(0).setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        splashView.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                }).start();
             }
         }, 3000);
     }
@@ -141,7 +157,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
+        if (DataProvider.isLogining()) {
             return;
         }
 
@@ -182,8 +198,24 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(phone, password);
-            mAuthTask.execute((Void) null);
+            DataProvider.login(phone, password,
+                    new Action() {
+                        @Override
+                        public void act() {
+                            MyApp.getInstance().getUserManager().saveLoginStatus(true);
+                            go(MainActivity.class);
+//                            showProgress(false);
+                            finish();
+                        }
+                    },
+                    new Action() {
+                        @Override
+                        public void act() {
+                            showToast(R.string.login_fail);
+                            showProgress(false);
+                            finish();
+                        }
+                    });
         }
     }
 
@@ -276,61 +308,5 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         int NUMBER = 0;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mPhone;
-        private final String mPassword;
-
-        UserLoginTask(String phone, String password) {
-            mPhone = phone;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-//            for (String credential : DUMMY_CREDENTIALS) {
-//                String[] pieces = credential.split(":");
-//                if (pieces[0].equals(mEmail)) {
-//                    // Account exists, return true if the password matches.
-//                    return pieces[1].equals(mPassword);
-//                }
-//            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
 }
 

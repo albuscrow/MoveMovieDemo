@@ -25,13 +25,49 @@
 
     <include layout="@layout/include_main"/>
 
-    <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
+    <!--<android.support.design.widget.FloatingActionButton-->
+    <!--android:id="@+id/fab"-->
+    <!--app:elevation="1dp"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="bottom|end"-->
+    <!--android:layout_margin="@dimen/fab_margin"-->
+    <!--android:src="@android:drawable/ic_dialog_email"/>-->
+
+
+    <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/menu"
             app:elevation="1dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_dialog_email"/>
+            app:menu_fab_size="normal">
+
+        <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_item_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_add"
+                app:fab_size="mini"
+                app:fab_label="Arrange schedule"/>
+
+        <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_item_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_agenda"
+                app:fab_size="mini"
+                app:fab_label="Menu item 1"/>
+
+        <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_item_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_day"
+                app:fab_size="mini"
+                app:fab_label="Menu item 1"/>
+
+    </com.github.clans.fab.FloatingActionMenu>
 
 </android.support.design.widget.CoordinatorLayout>

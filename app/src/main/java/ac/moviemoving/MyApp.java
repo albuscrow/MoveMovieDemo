@@ -1,6 +1,7 @@
 package ac.moviemoving;
 
 import ac.moviemoving.manager.UserManager;
+import android.app.Activity;
 import android.app.Application;
 
 /**
@@ -10,6 +11,7 @@ import android.app.Application;
 public class MyApp extends Application {
     private UserManager userManager;
     private static MyApp INSTANCE;
+    private Activity currentActivity;
 
     @Override
     public void onCreate() {
@@ -24,5 +26,13 @@ public class MyApp extends Application {
 
     public UserManager getUserManager() {
         return userManager;
+    }
+
+    public void setCurrentActivity(Activity activity) {
+        this.currentActivity = activity;
+    }
+
+    public Activity getCurrentActivity() {
+        return currentActivity;
     }
 }
