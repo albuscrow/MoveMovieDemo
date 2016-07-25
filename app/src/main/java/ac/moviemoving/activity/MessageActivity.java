@@ -2,6 +2,7 @@ package ac.moviemoving.activity;
 
 import ac.moviemoving.R;
 import ac.moviemoving.data.DataProvider;
+import ac.moviemoving.data.MyMessage;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.NotificationManager;
@@ -15,9 +16,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.*;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,6 +28,7 @@ import java.util.TimerTask;
 public class MessageActivity extends BaseActivity {
 
     private Random random;
+    private MessageAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +108,7 @@ public class MessageActivity extends BaseActivity {
                     focusView.requestFocus();
                 } else {
                     DataProvider.sendMessage(receiver, content, ((Spinner) rootView.findViewById(R.id.alert_after)).getSelectedItem().toString());
+                    MessageActivity.this.adapter.refresh();
                     Timer t = new Timer();
                     t.schedule(new TimerTask() {
                         @Override
@@ -164,7 +169,57 @@ public class MessageActivity extends BaseActivity {
             dialog.getWindow().setLayout(1200, 1100);
             sendButton.requestFocus();
         });
-        DataProvider.getMessage();
+
+        ListView listview = (ListView) findViewById(R.id.messages_listView);
+        adapter = new MessageAdapter();
+        listview.setAdapter(adapter);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.refresh();
+    }
+
+    class MessageAdapter extends BaseAdapter{
+        private List<MyMessage> data;
+
+        public MessageAdapter() {
+            this.data = DataProvider.getMessage();
+        }
+        public void refresh() {
+            this.data = DataProvider.getMessage();
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return this.data.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            if (view == null) {
+                view = LayoutInflater.from(MessageActivity.this).inflate(R.layout.item_message, viewGroup, false);
+            }
+            MyMessage mm = data.get(i);
+            ((TextView)view.findViewById(R.id.send_time)).setText("send time: " +mm.getSendTime());
+            ((TextView)view.findViewById(R.id.receiver)).setText("receiver: " + mm.getReceiversStr());
+            ((TextView)view.findViewById(R.id.unreceiver)).setText("Who has't seen: " + mm.getUnReceiversStr());
+            ((TextView)view.findViewById(R.id.content)).setText("content:" + mm.getContent());
+            return view;
+        }
     }
 
     @Override

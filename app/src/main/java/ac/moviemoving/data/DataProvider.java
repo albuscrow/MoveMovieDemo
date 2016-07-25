@@ -79,7 +79,7 @@ public class DataProvider {
     public static void sendMessage(String receiver, String content, String time) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString(MESSAGES, sp.getString(MESSAGES, "") + MyMessage.parse(receiver, content, time).toJsonString());
+        editor.putString(MESSAGES, sp.getString(MESSAGES, "") + ";" + MyMessage.parse(receiver, content, time).toJsonString());
         editor.apply();
     }
 

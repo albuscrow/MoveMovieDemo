@@ -13,4 +13,10 @@
         tools:showIn="@layout/activity_message"
         tools:context="ac.moviemoving.activity.MessageActivity">
 
+    <ListView
+            android:id="@+id/messages_listView"
+            android:dividerHeight="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
 </RelativeLayout>

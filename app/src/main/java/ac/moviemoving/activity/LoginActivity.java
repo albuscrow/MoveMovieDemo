@@ -29,6 +29,7 @@ import java.util.List;
 
 import static ac.moviemoving.Util.isPasswordValid;
 import static ac.moviemoving.Util.isPhoneValid;
+import static android.Manifest.permission.CALL_PHONE;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -133,7 +134,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             Snackbar.make(mPhoneView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, v -> requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS));
         } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
+            requestPermissions(new String[]{READ_CONTACTS, CALL_PHONE}, REQUEST_READ_CONTACTS);
         }
         return false;
     }
@@ -292,6 +293,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     }
 
     private void addPhonesToAutoComplete(List<String> phoneAddressCollection) {
+        phoneAddressCollection.add("17816861269");
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(LoginActivity.this,

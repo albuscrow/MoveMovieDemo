@@ -40,4 +40,64 @@ public class MyMessage {
             return null;
         }
     }
+
+    public String[] getReceivers() {
+        return receivers;
+    }
+
+    public void setReceivers(String[] receivers) {
+        this.receivers = receivers;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getAlertTime() {
+        return alertTime;
+    }
+
+    public void setAlertTime(String alertTime) {
+        this.alertTime = alertTime;
+    }
+
+    public String getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(String sendTime) {
+        this.sendTime = sendTime;
+    }
+
+    public boolean[] getIsReceived() {
+        return isReceived;
+    }
+
+    public void setIsReceived(boolean[] isReceived) {
+        this.isReceived = isReceived;
+    }
+
+    public String getReceiversStr() {
+        String res = "";
+        for (String s : receivers) {
+            res += s + ",";
+        }
+        return res.substring(0, res.length() - 1);
+    }
+
+    public String getUnReceiversStr() {
+        String res = "";
+        for (int i = 0; i < receivers.length; ++i) {
+            String s = receivers[i];
+            boolean isReceive = isReceived[i];
+            if (!isReceive) {
+                res += s + ",";
+            }
+        }
+        return res.substring(0, res.length() - 1);
+    }
 }
