@@ -76,10 +76,27 @@ public class DataProvider {
     }
 
     static final String MESSAGES = "message";
-    public static void sendMessage(String receiver, String content) {
+    public static void sendMessage(String receiver, String content, String time) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString(MESSAGES, sp.getString(MESSAGES, "") + MyMessage.parse(receiver, content).toJsonString());
+        editor.putString(MESSAGES, sp.getString(MESSAGES, "") + MyMessage.parse(receiver, content, time).toJsonString());
         editor.apply();
+    }
+
+    public static List<MyMessage> getMessage() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+        String messagesStr = sp.getString(MESSAGES, "");
+        if (messagesStr.length() == 0) {
+            return new ArrayList<>();
+        }
+        System.out.println(messagesStr);
+        List<MyMessage> messages = new ArrayList<>();
+        for (String messageStr : messagesStr.split(";")) {
+            MyMessage m = MyMessage.parseFromJson(messageStr);
+            if (m != null) {
+                messages.add(m);
+            }
+        }
+        return messages;
     }
 }

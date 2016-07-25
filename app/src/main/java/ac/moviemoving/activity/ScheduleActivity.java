@@ -4,14 +4,11 @@ import ac.CalUtil;
 import ac.moviemoving.R;
 import ac.moviemoving.data.DataProvider;
 import ac.moviemoving.model.RoomSchedule;
-import android.content.Context;
-import android.content.res.Resources.Theme;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -86,44 +83,6 @@ public class ScheduleActivity extends AppCompatActivity {
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
 
-    }
-
-
-    private static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
-        private final ThemedSpinnerAdapter.Helper mDropDownHelper;
-
-        public MyAdapter(Context context, String[] objects) {
-            super(context, android.R.layout.simple_list_item_1, objects);
-            mDropDownHelper = new ThemedSpinnerAdapter.Helper(context);
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            View view;
-
-            if (convertView == null) {
-                // Inflate the drop down using the helper's LayoutInflater
-                LayoutInflater inflater = mDropDownHelper.getDropDownViewInflater();
-                view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-            } else {
-                view = convertView;
-            }
-
-            TextView textView = (TextView) view.findViewById(android.R.id.text1);
-            textView.setText(getItem(position));
-
-            return view;
-        }
-
-        @Override
-        public Theme getDropDownViewTheme() {
-            return mDropDownHelper.getDropDownViewTheme();
-        }
-
-        @Override
-        public void setDropDownViewTheme(Theme theme) {
-            mDropDownHelper.setDropDownViewTheme(theme);
-        }
     }
 
 

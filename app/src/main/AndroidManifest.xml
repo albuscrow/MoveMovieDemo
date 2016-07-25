@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_PROFILE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
             android:name=".MyApp"
@@ -55,6 +56,7 @@
         </activity>
         <activity
                 android:name=".activity.MessageActivity"
+                android:launchMode="singleTop"
                 android:label="@string/title_activity_message"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
