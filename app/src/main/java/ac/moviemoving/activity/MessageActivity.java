@@ -3,14 +3,17 @@ package ac.moviemoving.activity;
 import ac.moviemoving.R;
 import ac.moviemoving.data.DataProvider;
 import ac.moviemoving.data.MyMessage;
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -182,12 +185,13 @@ public class MessageActivity extends BaseActivity {
         adapter.refresh();
     }
 
-    class MessageAdapter extends BaseAdapter{
+    class MessageAdapter extends BaseAdapter {
         private List<MyMessage> data;
 
         public MessageAdapter() {
             this.data = DataProvider.getMessage();
         }
+
         public void refresh() {
             this.data = DataProvider.getMessage();
             notifyDataSetChanged();
@@ -214,9 +218,34 @@ public class MessageActivity extends BaseActivity {
                 view = LayoutInflater.from(MessageActivity.this).inflate(R.layout.item_message, viewGroup, false);
             }
             MyMessage mm = data.get(i);
-            ((TextView)view.findViewById(R.id.send_time)).setText("send time: " +mm.getSendTime());
-            ((TextView)view.findViewById(R.id.receiver)).setText("receiver: " + mm.getReceiversStr());
-            ((TextView)view.findViewById(R.id.unreceiver)).setText("Who has't seen: " + mm.getUnReceiversStr());
+            ((TextView) view.findViewById(R.id.send_time)).setText("send time: " + mm.getSendTime());
+            ((TextView) view.findViewById(R.id.receiver)).setText("receiver: " + mm.getReceiversStr());
+            final String unReceiversStr = mm.getUnReceiversStr();
+            if (unReceiversStr.equals("All Read")) {
+                ((TextView) view.findViewById(R.id.unreceiver)).setText(unReceiversStr);
+                ((TextView) view.findViewById(R.id.unreceiver)).setTextColor(0xffaaffaa);
+                view.setBackgroundColor(0xffeeffee);
+
+                ((Button) view.findViewById(R.id.call_button)).setVisibility(View.GONE);
+                ((Button) view.findViewById(R.id.mark_as_read)).setVisibility(View.GONE);
+            } else {
+                ((TextView) view.findViewById(R.id.unreceiver)).setText("Who has't seen: " + unReceiversStr);
+                ((TextView) view.findViewById(R.id.unreceiver)).setTextColor(0xffff5555);
+                view.setBackgroundColor(0xffffdddd);
+                ((Button) view.findViewById(R.id.call_button)).setVisibility(View.VISIBLE);
+                ((Button) view.findViewById(R.id.mark_as_read)).setVisibility(View.VISIBLE);
+
+                ((Button) view.findViewById(R.id.call_button)).setOnClickListener(view1 -> {
+                    Intent phoneCallIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "17816861269"));
+                    if (ActivityCompat.checkSelfPermission(MessageActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        startActivity(phoneCallIntent);
+                    }
+                });
+                ((Button)view.findViewById(R.id.mark_as_read)).setOnClickListener(view1 -> {
+                    DataProvider.allMessageReaded();
+                    adapter.refresh();
+                });
+            }
             ((TextView)view.findViewById(R.id.content)).setText("content:" + mm.getContent());
             return view;
         }
@@ -232,11 +261,10 @@ public class MessageActivity extends BaseActivity {
         if (who != null && !who.isEmpty()) {
             new AlertDialog.Builder(this)
                     .setMessage("Have you called to " + who + "?")
-                    .setNegativeButton("No", (dialogInterface, i) -> {
-                        System.out.println("No");
-                    })
+                    .setNegativeButton("No", null)
                     .setPositiveButton("Yes", (dialogInterface, i) -> {
-                        System.out.println("Yes");
+                        DataProvider.allMessageReaded();
+                        adapter.refresh();
                     })
                     .create().show();
         }

@@ -59,4 +59,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void showNotImplement() {
         Toast.makeText(this, R.string.not_implement, Toast.LENGTH_SHORT).show();
     }
+    public void notImplement(View view) {
+        showToast(R.string.not_implement);
+    }
 }

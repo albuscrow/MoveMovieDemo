@@ -98,6 +98,16 @@ public class MyMessage {
                 res += s + ",";
             }
         }
-        return res.substring(0, res.length() - 1);
+        if (res.isEmpty()) {
+            return "All Read";
+        } else {
+            return res.substring(0, res.length() - 1);
+        }
+    }
+
+    public void allReaded() {
+        for (int i = 0; i < isReceived.length; ++i) {
+            isReceived[i] = true;
+        }
     }
 }

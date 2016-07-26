@@ -99,4 +99,28 @@ public class DataProvider {
         }
         return messages;
     }
+
+    public static void allMessageReaded() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+        String messagesStr = sp.getString(MESSAGES, "");
+        if (messagesStr.length() == 0) {
+            return;
+        }
+        List<MyMessage> messages = new ArrayList<>();
+        for (String messageStr : messagesStr.split(";")) {
+            MyMessage m = MyMessage.parseFromJson(messageStr);
+            if (m != null) {
+                messages.add(m);
+            }
+        }
+        messagesStr = "";
+        for (MyMessage m: messages) {
+            m.allReaded();
+            messagesStr += ";" + m.toJsonString();
+        }
+
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(MESSAGES, messagesStr);
+        editor.apply();
+    }
 }
