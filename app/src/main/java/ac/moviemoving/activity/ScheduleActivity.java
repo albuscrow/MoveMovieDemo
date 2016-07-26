@@ -4,14 +4,13 @@ import ac.CalUtil;
 import ac.moviemoving.R;
 import ac.moviemoving.data.DataProvider;
 import ac.moviemoving.model.RoomSchedule;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -61,7 +60,6 @@ public class ScheduleActivity extends AppCompatActivity {
         spinner.setAdapter(new MyAdapter(
                 toolbar.getContext(),
                 new String[]{
-                        "All",
                         "Room 1",
                         "Room 2",
                         "Room 3",
@@ -80,9 +78,18 @@ public class ScheduleActivity extends AppCompatActivity {
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
+        fab.setOnClickListener(view -> {
+            final Dialog dialog = new Dialog(ScheduleActivity.this);
+//            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setTitle("One click to arrange schedule");
+            dialog.setCancelable(true);
 
+        });
+
+    }
+
+    public void chooseTime(View v) {
+        //todo show date choose dialog
     }
 
 
@@ -90,6 +97,8 @@ public class ScheduleActivity extends AppCompatActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class ShowScheduleFragment extends Fragment {
+        private List<RoomSchedule> roomSchedules;
+
         public ShowScheduleFragment() {
         }
 
@@ -108,30 +117,8 @@ public class ScheduleActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-            rootView.findViewById(R.id.scrollViewSchedule).setOnTouchListener((view, motionEvent) -> {
-                System.out.println("ShowScheduleFragment.onCreateView");
-                touchedView = null;
-                return false;
-            });
-            ViewGroup scheduleTable = (ViewGroup) rootView.findViewById(R.id.schedule);
             //todo should by async from internet
-            List<RoomSchedule> roomSchedules = DataProvider.getRoomSchedule();
-            for (RoomSchedule rs : roomSchedules) {
-                ListView lv = new ListView(getActivity());
-                lv.setVerticalScrollBarEnabled(false);
-                final String[] data = new String[50];
-                for (int i = 0; i < 50; ++i) {
-                    data[i] = "move name name\ntime time time;";
-                }
-                lv.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.sample_text_view, data) {
-                    @Override
-                    public boolean isEnabled(int position) {
-                        return false;
-                    }
-                });
-                scheduleTable.addView(lv);
-                addToSyncGroup(lv);
-            }
+            roomSchedules = DataProvider.getRoomSchedule();
 
             //init time listview
             ListView timeListView = (ListView) rootView.findViewById(R.id.timeList);
@@ -171,7 +158,6 @@ public class ScheduleActivity extends AppCompatActivity {
                     return false;
                 }
             });
-            addToSyncGroup(timeListView);
 
             return rootView;
         }
@@ -181,26 +167,26 @@ public class ScheduleActivity extends AppCompatActivity {
 
         private View touchedView = null;
 
-        private void addToSyncGroup(ListView lv) {
-            syncListViews.add(lv);
-            lv.setOnTouchListener((view, motionEvent) -> {
-                if (touchedView == null) {
-                    touchedView = view;
-                }
-                if (view == touchedView) {
-                    for (ListView other : syncListViews) {
-                        if (other != touchedView) {
-                            other.dispatchTouchEvent(motionEvent);
-                        }
-                    }
-                    if (motionEvent.getAction() == MotionEvent.ACTION_UP
-                            || motionEvent.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
-                        touchedView = null;
-                    }
-                }
-                return false;
-            });
-        }
+//        private void addToSyncGroup(ListView lv) {
+//            syncListViews.add(lv);
+//            lv.setOnTouchListener((view, motionEvent) -> {
+//                if (touchedView == null) {
+//                    touchedView = view;
+//                }
+//                if (view == touchedView) {
+//                    for (ListView other : syncListViews) {
+//                        if (other != touchedView) {
+//                            other.dispatchTouchEvent(motionEvent);
+//                        }
+//                    }
+//                    if (motionEvent.getAction() == MotionEvent.ACTION_UP
+//                            || motionEvent.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
+//                        touchedView = null;
+//                    }
+//                }
+//                return false;
+//            });
+//        }
 
     }
 

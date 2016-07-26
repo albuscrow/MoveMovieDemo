@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:layout_height="wrap_content">
+        <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="From time:"
+                android:id="@+id/textView10"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:hint="Click to choose"
+                android:onClick="chooseTime"
+                android:id="@+id/textView11"/>
+    </LinearLayout>
+    <LinearLayout
+            android:padding="20dp"
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:weightSum="1">
+        <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium" android:text="To Time:"
+                android:id="@+id/textView13"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:textAppearance="?android:attr/textAppearanceMedium"
+                  android:hint="Click to choose"
+                  android:onClick="chooseTime"
+                  android:id="@+id/textView12"/>
+    </LinearLayout>
+    <LinearLayout
+            android:padding="20dp"
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <Button android:layout_width="0dp" android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium" android:text="Advance Options"
+                android:onClick="notImplement"
+                android:layout_weight="1"
+                android:id="@+id/textView14"/>
+        <Button android:layout_width="0dp" android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium" android:text="Arrange"
+                android:layout_weight="1"
+                android:id="@+id/textView15"/>
+    </LinearLayout>
+</LinearLayout>
