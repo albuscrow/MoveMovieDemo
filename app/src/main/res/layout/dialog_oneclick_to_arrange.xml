@@ -4,6 +4,13 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <TextView
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="one click to arrange schedule"/>
+
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -43,13 +50,13 @@
             android:orientation="horizontal" android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <Button android:layout_width="0dp" android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium" android:text="Advance Options"
+                android:textAppearance="?android:attr/textAppearanceMedium" android:text="Advance"
                 android:onClick="notImplement"
                 android:layout_weight="1"
                 android:id="@+id/textView14"/>
         <Button android:layout_width="0dp" android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium" android:text="Arrange"
                 android:layout_weight="1"
-                android:id="@+id/textView15"/>
+                android:id="@+id/begin_arrange"/>
     </LinearLayout>
 </LinearLayout>

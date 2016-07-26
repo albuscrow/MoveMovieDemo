@@ -4,12 +4,14 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimaryDark"/>
     <TextView
-            android:id="@+id/time"
+            android:id="@+id/time_start"
+            android:gravity="top|center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"/>
+
+    <TextView
+            android:id="@+id/time_end"
             android:gravity="top|center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="100dp"/>
