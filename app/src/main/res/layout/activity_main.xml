@@ -50,13 +50,13 @@
                 app:fab_size="mini"
                 app:fab_label="Send Message"/>
 
-        <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/menu_item_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_day"
-                app:fab_size="mini"
-                app:fab_label="Start a vote"/>
+        <!--<com.github.clans.fab.FloatingActionButton-->
+                <!--android:id="@+id/menu_item_3"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@android:drawable/ic_menu_day"-->
+                <!--app:fab_size="mini"-->
+                <!--app:fab_label="Start a vote"/>-->
 
     </com.github.clans.fab.FloatingActionMenu>
 

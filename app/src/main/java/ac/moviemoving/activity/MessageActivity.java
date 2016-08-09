@@ -3,17 +3,11 @@ package ac.moviemoving.activity;
 import ac.moviemoving.R;
 import ac.moviemoving.data.DataProvider;
 import ac.moviemoving.data.MyMessage;
-import android.Manifest;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.app.*;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -137,9 +131,11 @@ public class MessageActivity extends BaseActivity {
                             // Gets an instance of the NotificationManager service
                             NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                             // Builds the notification and issues it.
-                            mNotifyMgr.notify(mNotificationId, mBuilder.build());
+                            final Notification build = mBuilder.build();
+                            build.defaults |= Notification.DEFAULT_SOUND;
+                            mNotifyMgr.notify(mNotificationId, build);
                         }
-                    }, 1000);
+                    }, 5000);
                     dialog.dismiss();
                 }
             });
@@ -237,16 +233,15 @@ public class MessageActivity extends BaseActivity {
 
                 ((Button) view.findViewById(R.id.call_button)).setOnClickListener(view1 -> {
                     Intent phoneCallIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "17816861269"));
-                    if (ActivityCompat.checkSelfPermission(MessageActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        startActivity(phoneCallIntent);
-                    }
+                    //noinspection ResourceType
+                    startActivity(phoneCallIntent);
                 });
-                ((Button)view.findViewById(R.id.mark_as_read)).setOnClickListener(view1 -> {
+                ((Button) view.findViewById(R.id.mark_as_read)).setOnClickListener(view1 -> {
                     DataProvider.allMessageReaded();
                     adapter.refresh();
                 });
             }
-            ((TextView)view.findViewById(R.id.content)).setText("content:" + mm.getContent());
+            ((TextView) view.findViewById(R.id.content)).setText("content:" + mm.getContent());
             return view;
         }
     }

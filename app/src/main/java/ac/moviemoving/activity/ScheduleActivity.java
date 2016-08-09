@@ -89,7 +89,7 @@ public class ScheduleActivity extends BaseActivity {
             rootView.findViewById(R.id.begin_arrange).setOnClickListener(view1 -> {
                 adapter.afterArrange();
                 dialog.dismiss();
-            });BaseAdapter
+            });
             dialog.setContentView(rootView);
             dialog.show();
         });

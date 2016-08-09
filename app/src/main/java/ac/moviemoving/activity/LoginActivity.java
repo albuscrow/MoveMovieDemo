@@ -83,10 +83,10 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     private void showSplashScreenAsync() {
         hideActionBar();
         new Handler().postDelayed(() -> {
-            if (MyApp.getInstance().getUserManager().isLogin()) {
-                go(MainActivity.class);
-                finish();
-            } else {
+//            if (MyApp.getInstance().getUserManager().isLogin()) {
+//                go(MainActivity.class);
+//                finish();
+//            } else {
                 this.showActionBar();
                 this.showSoftKeyboard(mPhoneView);
                 final View splashView = findViewById(R.id.splash_screen);
@@ -111,7 +111,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
                     }
                 }).start();
-            }
+//            }
         }, 1500);
     }
 
